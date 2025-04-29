@@ -36,6 +36,15 @@ CREATE TABLE cs_acoes (  -- tabela que registra o diálogo das ações feitas pe
     data_acao timestamptz NULL,  -- registra a data que a ação foi descrita
     CONSTRAINT acoes_pk PRIMARY KEY (acao_id)
 );
+
+CREATE TABLE cs_sentimentos (
+    sentimento_id serial4 NOT NULL,
+    acao_id int4 NOT NULL,
+    sentimento text NOT NULL,
+    CONSTRAINT sentimento_id PRIMARY KEY (sentimento_id)
+
+);
+
 CREATE INDEX cs_acoes_event_id_idx ON cs_acoes USING btree (event_id);
 
 -- cs_acoes foreign keys
@@ -43,6 +52,7 @@ ALTER TABLE cs_acoes ADD CONSTRAINT cs_acoes_cs_events_fk FOREIGN KEY (event_id)
 ALTER TABLE cs_acoes ADD CONSTRAINT cs_acoes_cs_user_fk FOREIGN KEY (user_id) REFERENCES cs_user(user_id);
 ALTER TABLE cs_acoes ADD CONSTRAINT cs_acoes_cs_agents_fk FOREIGN KEY (agent_id) REFERENCES cs_agents(agent_id);
 
+ALTER TABLE cs_sentimentos ADD CONSTRAINT cs_sentimentos_cs_acoes_fk FOREIGN KEY (acao_id) REFERENCES cs_acoes(acao_id);
 
 --Observações:
 -- Os atributos sobre a análise de sentimentos não forão definidos, pois devem ser a partir de análise da melhor forma. Desta forma, o modelo atual pode ser adaptado para receber novos atributos ou entidades
